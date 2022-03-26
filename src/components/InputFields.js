@@ -60,11 +60,7 @@ function linkGen(inputTab) {
 }
 
 export default function InputFields(props) {
-  // Save the top text
-  const [topText, setTopText] = useState("");
-  // Save the bottom text
-  const [bottomText, setBottomText] = useState("");
-  let nb = props.inputNb;
+  const nb = props.inputNb;
   const [inputTab, setInputTab] = useState([]);
 
   useEffect(() => {
@@ -121,7 +117,7 @@ export default function InputFields(props) {
       <button onClick={() => download(props.memeUrl, props.chosenMeme)}>
         Download
       </button>
-      {inputTab.map((item, key) => {
+      {inputTab.map((it, key) => {
         return (
           <div key={key}>
             {console.log(key)}
