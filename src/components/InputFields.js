@@ -49,39 +49,33 @@ function download(downloadUrl, fileText) {
     });
 }
 
+function linkGen(inputTab) {
+  console.log(inputTab);
+  let url = "";
+
+  inputTab.forEach((item) => {
+    url = url + "/" + item;
+  });
+  return url;
+}
+
 export default function InputFields(props) {
   // Save the top text
   const [topText, setTopText] = useState("");
   // Save the bottom text
   const [bottomText, setBottomText] = useState("");
+  let nb = props.inputNb;
+  const [inputTab, setInputTab] = useState([]);
+
+  useEffect(() => {
+    setInputTab(Array(nb).fill(""));
+  }, [nb]);
+
   return (
     <div className="inputFields">
-      <div>
-        <label htmlFor="topText">Top Text</label>
-        <input
-          id="topText"
-          type="text"
-          onChange={({ target }) => {
-            const urlText = target.value
-              .split("")
-              .map((item) => escapingCharacters(item));
-            props.setTopText(urlText.join(""));
-            setTopText(urlText.join(""));
+      {console.log(inputTab, props.inputNb, nb)}
 
-            console.log(
-              `api.memegen.link/images/${props.chosenMeme}/${urlText.join(
-                ""
-              )}/${bottomText}.jpg?width=450&height=450`
-            );
-            props.setMemeUrl(
-              `https://api.memegen.link/images/${
-                props.chosenMeme
-              }/${urlText.join("")}/${bottomText}.jpg?width=450&height=450`
-            );
-          }}
-        />
-      </div>
-      <div>
+      {/* <div>
         <label htmlFor="bottomText">Bottom Text</label>
         <input
           id="bottomText"
@@ -104,7 +98,7 @@ export default function InputFields(props) {
             );
           }}
         />
-      </div>
+      </div> */}
       <button
         onClick={() => {
           props.setOverlayHidden(false);
@@ -114,9 +108,11 @@ export default function InputFields(props) {
       </button>
       <button
         onClick={() => {
-          console.log(props.chosenMeme);
+          console.log(linkGen(inputTab));
           props.setMemeUrl(
-            `https://api.memegen.link/images/${props.chosenMeme}/${props.topText}/${props.bottomText}.jpg?width=450&height=450`
+            `https://api.memegen.link/images/${props.chosenMeme}/${linkGen(
+              inputTab
+            ).slice(1)}.jpg?width=450&height=450`
           );
         }}
       >
@@ -125,6 +121,38 @@ export default function InputFields(props) {
       <button onClick={() => download(props.memeUrl, props.chosenMeme)}>
         Download
       </button>
+      {inputTab.map((item, key) => {
+        return (
+          <div key={key}>
+            {console.log(key)}
+            <label htmlFor="bottomText">Text</label>
+            <input
+              id="bottomText"
+              type="text"
+              onChange={({ target }) => {
+                const urlText = target.value
+                  .split("")
+                  .map((item) => escapingCharacters(item));
+                // props.setBottomText(urlText.join(""));
+
+                inputTab[key] = urlText.join("");
+                setInputTab(inputTab);
+                // setBottomText(urlText.join(""));
+                // console.log(
+                //   `api.memegen.link/images/${
+                //     props.chosenMeme
+                //   }/${topText}/${urlText.join("")}.jpg?width=450&height=450`
+                // );
+                // props.setMemeUrl(
+                //   `https://api.memegen.link/images/${
+                //     props.chosenMeme
+                //   }/${topText}/${urlText.join("")}.jpg?width=450&height=450`
+                // );
+              }}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -9,6 +9,7 @@ async function getPreviewTemplates(setter) {
     const response = await fetch("https://api.memegen.link/templates/");
     const body = await response.json();
     console.log(body);
+
     setter(body.map((item) => item.blank.split(".png")[0].split("/")[4]));
   } catch (error) {
     console.log(error);
@@ -28,6 +29,8 @@ export default function App() {
   const [bottomText, setBottomText] = useState("");
   // Save the complete meme URL of the generated meme
   const [memeUrl, setMemeUrl] = useState("");
+  // Save the number of inputs
+  const [inputNb, setInputNb] = useState(0);
 
   // Use useEffect to setTemplateNames after the fetch is resolved
   useEffect(() => {
@@ -47,6 +50,7 @@ export default function App() {
         chosenMeme={chosenMeme}
         memeUrl={memeUrl}
         setMemeUrl={setMemeUrl}
+        inputNb={inputNb}
       />
       <PreviewMeme chosenMeme={chosenMeme} memeUrl={memeUrl} />
 
@@ -56,6 +60,7 @@ export default function App() {
         setOverlayHidden={setOverlayHidden}
         setChosenMeme={setChosenMeme}
         setMemeUrl={setMemeUrl}
+        setInputNb={setInputNb}
       />
     </>
   );

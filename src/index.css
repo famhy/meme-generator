@@ -40,11 +40,12 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   padding: 2rem;
   background-color: #eeeeee;
   border-radius: 1rem 0 0 1rem;
   box-shadow: 0.278rem 0.444rem 0.556rem #0000005c;
+  overflow: scroll;
 }
 
 label {

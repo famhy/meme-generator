@@ -1,7 +1,7 @@
 export default function Overlay(props) {
   return (
     <div
-      className={props.overlayHidden ? 'overlay hidden' : 'overlay visible'}
+      className={props.overlayHidden ? "overlay hidden" : "overlay visible"}
       onClick={() => props.setOverlayHidden(true)}
       onKeyDown={() => props.setOverlayHidden(true)}
       role="button"
@@ -20,16 +20,27 @@ export default function Overlay(props) {
             return (
               <div
                 key={item}
-                onClick={() => {
+                onClick={async () => {
                   props.setChosenMeme(item);
                   props.setMemeUrl(
-                    `https://api.memegen.link/images/${item}.jpg?width=450&height=450`,
+                    `https://api.memegen.link/images/${item}.jpg?width=450&height=450`
                   );
+                  try {
+                    const response = await fetch(
+                      `https://api.memegen.link/templates/${item}`
+                    );
+                    const body = await response.json();
+                    console.log(body.lines);
+                    props.setInputNb(body.lines);
+                    // setter(body.map((item) => item.blank.split(".png")[0].split("/")[4]));
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
                 onKeyDown={() => {
                   props.setChosenMeme(item);
                   props.setMemeUrl(
-                    `https://api.memegen.link/images/${item}.jpg?width=450&height=450`,
+                    `https://api.memegen.link/images/${item}.jpg?width=450&height=450`
                   );
                 }}
                 role="button"
